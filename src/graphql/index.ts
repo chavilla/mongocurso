@@ -1,6 +1,3 @@
-import { gql } from 'apollo-server-express'
-import { readFileSync } from 'fs'
-import path from 'path'
 import Mutations from './resolvers/mutations';
 import Queries from './resolvers/queries';
 import { GraphQLDateTime } from 'graphql-iso-date'
@@ -27,16 +24,6 @@ export const DateScalar = new GraphQLScalarType({
     return null
   },
 });
-
-// Load all SDL files and merge them
-const loadSchema = (filename: string) =>
-    readFileSync(path.join(__dirname, 'schemas', filename), 'utf8')
-
-export const typeDefs = gql(
-    loadSchema('product.graphql') //+
-    //loadSchema('query.graphql') +
-    //loadSchema('mutation.graphql')
-);
 
 export const resolvers = {
     Mutation:Mutations,

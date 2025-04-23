@@ -1,10 +1,9 @@
-import express, { Application } from 'express'
+import express, { Application } from 'express';
 import mongoose, { Error as MongooseError } from 'mongoose';
 import { ApolloServer, ExpressContext } from 'apollo-server-express';
 const dotenv = require('dotenv');
-import { typeDefs, resolvers } from './graphql';
-import cors from 'cors'
-//const routes = require('./routes');
+import { resolvers } from './graphql';
+import typeDefs from './graphql/schemas';
 
 const app: Application = express()
 app.use(express.json());
@@ -26,9 +25,10 @@ startServer()
  // ----- EXPRESS general configs -----
 dotenv.config();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.NODE_ENV === 'test'? 4001 : process.env.PORT || 4000; 
+
 app.listen(PORT, () => {
-  return console.log(`Server has started in http://localhost:${PORT}`);
+  console.log(`Server has started in http://localhost:${PORT}`);
 });
 
 // ----- EXPRESS Router -----
@@ -38,6 +38,8 @@ app.get('/', (req, res) => {
 });
 
 // ----- !DB connection! -----
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/practicas')
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/testing')
   .then(() => console.log('MongoDB conectado exitosamente'))
   .catch((err: MongooseError) => console.error(err?.message));
+
+  export default app;

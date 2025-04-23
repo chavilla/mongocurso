@@ -1,8 +1,8 @@
-import Product from "../models/ProductModel";
+import Product, { IProduct } from "../models/ProductModel";
 import { v4 as uuidv4 } from 'uuid'
 
 const ProductService = {
-  getAll: async () => {
+  getAll: async (): Promise<IProduct[]> => {
     let storedProducts = await Product.find({});
     return storedProducts;
   },
@@ -33,20 +33,17 @@ const ProductService = {
   },
   createProduct: async (description: string, price: number) => {
     try {
-      let storedProduct = await Product.create({ 
+      let storedProduct: IProduct = await Product.create({ 
         _id: uuidv4(),
         description, 
         price });
+
       return {
         message: "¡Product was stored successfully!",
         status: true,
         storedProduct
       };
     } catch (error) {
-
-      console.log("Error ", error);
-      
-
       return {
         message: "¡Something went wrong!",
         status: false
